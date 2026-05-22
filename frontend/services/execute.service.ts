@@ -17,9 +17,19 @@ export type ExecuteResponse = {
   exitCode: number;
   time: number | null;
   memory: number | null;
+  message?: string;
 };
 
 export const executeService = {
   execute: (payload: ExecuteRequest): Promise<ExecuteResponse> =>
     api.post<ExecuteResponse>("/execute", payload),
+};
+
+// Convenience functions
+export const executeCode = (code: string): Promise<ExecuteResponse> => {
+  return executeService.execute({
+    code,
+    language: "python",
+    version: "3.10",
+  });
 };

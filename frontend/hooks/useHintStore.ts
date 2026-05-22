@@ -6,6 +6,7 @@ type HintStore = {
   hints: string[];
   getNextHint: () => void;
   resetHints: () => void;
+  setHint: (hint: string) => void;
 };
 
 const hintSteps = [
@@ -32,4 +33,11 @@ export const useHintStore = create<HintStore>((set, get) => ({
       hint: hintSteps[0],
       hintCount: 1,
     }),
+  setHint: (hint: string) => {
+    const { hintCount } = get();
+    set({
+      hint,
+      hintCount: hintCount + 1,
+    });
+  },
 }));

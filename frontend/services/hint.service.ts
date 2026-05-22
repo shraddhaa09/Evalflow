@@ -19,3 +19,11 @@ export const hintService = {
   getHint: (payload: HintRequest): Promise<HintResponse> =>
     api.post<HintResponse>("/hint", payload),
 };
+
+// Convenience functions
+export const getHint = (code: string): Promise<HintResponse> => {
+  return hintService.getHint({
+    code,
+    language: "python",
+  });
+};

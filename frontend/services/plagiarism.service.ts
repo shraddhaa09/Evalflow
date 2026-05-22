@@ -21,3 +21,11 @@ export const plagiarismService = {
   analyze: (payload: PlagiarismRequest): Promise<PlagiarismResponse> =>
     api.post<PlagiarismResponse>("/plagiarism", payload),
 };
+
+// Convenience functions
+export const checkPlagiarism = (code: string): Promise<PlagiarismResponse> => {
+  return plagiarismService.analyze({
+    code,
+    language: "python",
+  });
+};
