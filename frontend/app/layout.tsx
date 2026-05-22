@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
+// @ts-ignore: CSS import handled by Next.js
 import "./globals.css";
 
 const inter = Inter({
