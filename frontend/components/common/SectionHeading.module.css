@@ -1,0 +1,87 @@
+/* components/common/SectionHeading.module.css */
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* ── Alignment ────────────────────────────────────────── */
+.left {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.center {
+  align-items: center;
+  text-align: center;
+}
+
+.right {
+  align-items: flex-end;
+  text-align: right;
+}
+
+/* ── Sizes ───────────────────────────────────────────── */
+.sm .title {
+  font-size: 1.25rem;
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.md .title {
+  font-size: 1.75rem;
+  line-height: 1.2;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.lg .title {
+  font-size: 2.25rem;
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.xl .title {
+  font-size: 3rem;
+  line-height: 1.1;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+}
+
+/* ── Title ───────────────────────────────────────────── */
+.title {
+  color: #0f172a;
+  margin: 0;
+}
+
+/* ── Subtitle ────────────────────────────────────────── */
+.subtitle {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #155dfc;
+  margin-bottom: 4px;
+}
+
+/* ── Responsive ──────────────────────────────────────── */
+@media (max-width: 640px) {
+  .sm .title {
+    font-size: 1.1rem;
+  }
+
+  .md .title {
+    font-size: 1.5rem;
+  }
+
+  .lg .title {
+    font-size: 1.8rem;
+  }
+
+  .xl .title {
+    font-size: 2.2rem;
+  }
+}

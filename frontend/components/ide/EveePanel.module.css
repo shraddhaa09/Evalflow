@@ -1,0 +1,83 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-height: 100%;
+  padding: 1rem;
+  background: #fffdf5;
+  border: 1px solid rgba(244, 196, 48, 0.35);
+  border-radius: 24px;
+  box-shadow: 0 16px 42px rgba(122, 86, 0, 0.08);
+}
+
+.header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.eyebrow {
+  color: #8a6200;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin-top: 0.3rem;
+  color: #221700;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0.5rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(244, 196, 48, 0.16);
+  color: #7a5600;
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.card {
+  padding: 1rem;
+  border-radius: 20px;
+  background: linear-gradient(to bottom, #fff7d6, #fff2b8);
+  border: 1px solid rgba(244, 196, 48, 0.42);
+}
+
+.label {
+  color: #8a6200;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hint {
+  margin-top: 0.7rem;
+  color: #332200;
+  font-size: 0.96rem;
+  line-height: 1.8;
+}
+
+.button {
+  min-height: 46px;
+  border-radius: 999px;
+  background: #0f172a;
+  color: #ffffff;
+  font-size: 0.94rem;
+  font-weight: 700;
+  transition: 0.2s ease;
+}
+
+.button:hover {
+  background: #155dfc;
+}

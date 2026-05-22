@@ -1,0 +1,96 @@
+/* components/common/Loader.module.css */
+.loader {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* ── Variants ─────────────────────────────────────────── */
+.default .spinner {
+  border: 3px solid rgba(15, 23, 42, 0.15);
+  border-top-color: #0f172a;
+}
+
+.primary .spinner {
+  border: 3px solid rgba(21, 93, 252, 0.15);
+  border-top-color: #155dfc;
+}
+
+.white .spinner {
+  border: 3px solid rgba(255, 255, 255, 0.15);
+  border-top-color: #ffffff;
+}
+
+/* ── Sizes ───────────────────────────────────────────── */
+.sm {
+  font-size: 0.84rem;
+}
+
+.sm .spinner {
+  width: 16px;
+  height: 16px;
+  border-width: 2px;
+}
+
+.md {
+  font-size: 0.96rem;
+}
+
+.md .spinner {
+  width: 24px;
+  height: 24px;
+  border-width: 3px;
+}
+
+.lg {
+  font-size: 1.05rem;
+}
+
+.lg .spinner {
+  width: 32px;
+  height: 32px;
+  border-width: 4px;
+}
+
+/* ── Spinner ─────────────────────────────────────────── */
+.spinner {
+  flex-shrink: 0;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* ── Label ───────────────────────────────────────────── */
+.label {
+  color: #475569;
+  font-weight: 500;
+}
+
+.white .label {
+  color: #ffffff;
+}
+
+/* ── Keyframes ───────────────────────────────────────── */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Responsive ──────────────────────────────────────── */
+@media (max-width: 640px) {
+  .sm .spinner {
+    width: 14px;
+    height: 14px;
+  }
+
+  .md .spinner {
+    width: 20px;
+    height: 20px;
+  }
+
+  .lg .spinner {
+    width: 28px;
+    height: 28px;
+  }
+}

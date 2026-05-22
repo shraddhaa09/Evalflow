@@ -1,25 +1,35 @@
-import { create } from 'zustand'
+import { create } from "zustand";
 
-interface HintStore {
-  question: string
-  hint: string
-  isLoading: boolean
-  error: string | null
-  setQuestion: (question: string) => void
-  setHint: (hint: string) => void
-  setLoading: (loading: boolean) => void
-  setError: (error: string | null) => void
-  clear: () => void
-}
+type HintStore = {
+  hint: string;
+  hintCount: number;
+  hints: string[];
+  getNextHint: () => void;
+  resetHints: () => void;
+};
 
-export const useHintStore = create<HintStore>((set) => ({
-  question: '',
-  hint: '',
-  isLoading: false,
-  error: null,
-  setQuestion: (question) => set({ question }),
-  setHint: (hint) => set({ hint }),
-  setLoading: (loading) => set({ isLoading: loading }),
-  setError: (error) => set({ error }),
-  clear: () => set({ question: '', hint: '', error: null }),
-}))
+const hintSteps = [
+  "Focus on the comparison with the middle element. Which half can be safely ignored after that check?",
+  "If the target is smaller than arr[mid], move the right boundary. If it is larger, move the left boundary.",
+  "Your loop already finds the middle correctly. The missing step is updating left or right so the search space keeps shrinking.",
+];
+
+export const useHintStore = create<HintStore>((set, get) => ({
+  hint: hintSteps[0],
+  hintCount: 1,
+  hints: hintSteps,
+  getNextHint: () => {
+    const { hintCount, hints } = get();
+    const nextIndex = Math.min(hintCount, hints.length - 1);
+
+    set({
+      hint: hints[nextIndex],
+      hintCount: Math.min(hintCount + 1, hints.length),
+    });
+  },
+  resetHints: () =>
+    set({
+      hint: hintSteps[0],
+      hintCount: 1,
+    }),
+}));

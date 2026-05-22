@@ -1,19 +1,44 @@
-import { create } from 'zustand'
+import { create } from "zustand";
 
-interface TerminalStore {
-  output: string
-  isRunning: boolean
-  setOutput: (output: string) => void
-  appendOutput: (text: string) => void
-  clear: () => void
-  setRunning: (running: boolean) => void
-}
+type TerminalStatus = "idle" | "running" | "success" | "error";
+
+type TerminalStore = {
+  output: string;
+  status: TerminalStatus;
+  setOutput: (output: string) => void;
+  setStatus: (status: TerminalStatus) => void;
+  runStart: () => void;
+  runSuccess: (output: string) => void;
+  runError: (output: string) => void;
+  resetTerminal: () => void;
+};
+
+const initialOutput =
+  "Ready.\nRun your code to inspect output, errors, timing, and memory.";
 
 export const useTerminalStore = create<TerminalStore>((set) => ({
-  output: '> Ready\n',
-  isRunning: false,
+  output: initialOutput,
+  status: "idle",
   setOutput: (output) => set({ output }),
-  appendOutput: (text) => set((state) => ({ output: state.output + text + '\n' })),
-  clear: () => set({ output: '' }),
-  setRunning: (running) => set({ isRunning: running }),
-}))
+  setStatus: (status) => set({ status }),
+  runStart: () =>
+    set({
+      status: "running",
+      output: "Running your code...\n",
+    }),
+  runSuccess: (output) =>
+    set({
+      status: "success",
+      output,
+    }),
+  runError: (output) =>
+    set({
+      status: "error",
+      output,
+    }),
+  resetTerminal: () =>
+    set({
+      status: "idle",
+      output: initialOutput,
+    }),
+}));

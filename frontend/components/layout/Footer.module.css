@@ -1,0 +1,95 @@
+.footer {
+  border-top: 1px solid rgba(15, 23, 42, 0.08);
+  background:
+    linear-gradient(to bottom, rgba(239, 244, 255, 0.55), rgba(255, 255, 255, 1));
+}
+
+.inner {
+  width: min(1200px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0 2.5rem;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr 0.9fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.brandBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.logoText {
+  color: #0f172a;
+}
+
+.logoAccent {
+  color: #155dfc;
+}
+
+.tagline {
+  max-width: 30ch;
+  color: #475569;
+  font-size: 0.96rem;
+  line-height: 1.7;
+}
+
+.linksBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.link {
+  width: fit-content;
+  color: #334155;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: #155dfc;
+}
+
+.metaBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  align-items: flex-start;
+}
+
+.meta {
+  color: #0f172a;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.copy {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .inner {
+    width: min(100% - 1.25rem, 1200px);
+    grid-template-columns: 1fr;
+    padding: 1.5rem 0 2rem;
+  }
+
+  .tagline {
+    max-width: 100%;
+  }
+}

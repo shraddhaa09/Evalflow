@@ -1,46 +1,44 @@
-import { API_ENDPOINTS } from '@/lib/config'
+// services/api.ts
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "/api";
 
-export async function executeCode(code: string, language: string) {
-  const response = await fetch(API_ENDPOINTS.execute, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ code, language }),
-  })
+export async function request<T>(
+  endpoint: string,
+  options: RequestInit = {}
+): Promise<T> {
+  const url = `${API_BASE}${endpoint}`;
 
-  if (!response.ok) {
-    const error = await response.json()
-    throw new Error(error.detail || 'Execution failed')
-  }
+  const config: RequestInit = {
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+    ...options,
+  };
 
-  return response.json()
-}
-
-export async function getHint(question: string, code: string, language: string) {
-  const response = await fetch(API_ENDPOINTS.hint, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ question, current_code: code, language }),
-  })
+  const response = await fetch(url, config);
 
   if (!response.ok) {
-    const error = await response.json()
-    throw new Error(error.detail || 'Hint request failed')
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(
+      errorData.error || errorData.message || `HTTP ${response.status}`
+    );
   }
 
-  return response.json()
+  return response.json();
 }
 
-export async function checkPlagiarism(code: string, language: string) {
-  const response = await fetch(API_ENDPOINTS.plagiarism, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ code, language }),
-  })
-
-  if (!response.ok) {
-    const error = await response.json()
-    throw new Error(error.detail || 'Plagiarism check failed')
-  }
-
-  return response.json()
-}
+export const api = {
+  get: <T>(endpoint: string) => request<T>(endpoint, { method: "GET" }),
+  post: <T>(endpoint: string, body?: unknown) =>
+    request<T>(endpoint, {
+      method: "POST",
+      body: JSON.stringify(body),
+    }),
+  put: <T>(endpoint: string, body?: unknown) =>
+    request<T>(endpoint, {
+      method: "PUT",
+      body: JSON.stringify(body),
+    }),
+  delete: <T>(endpoint: string) =>
+    request<T>(endpoint, { method: "DELETE" }),
+};

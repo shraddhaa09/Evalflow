@@ -1,0 +1,81 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background: #0b1220;
+  border: 1px solid rgba(15, 23, 42, 0.14);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(2, 6, 23, 0.18);
+}
+
+.header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.eyebrow {
+  color: #93c5fd;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin-top: 0.3rem;
+  color: #f8fafc;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0.5rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.idle {
+  background: rgba(148, 163, 184, 0.16);
+  color: #cbd5e1;
+}
+
+.running {
+  background: rgba(244, 196, 48, 0.16);
+  color: #ffe082;
+}
+
+.success {
+  background: rgba(34, 197, 94, 0.14);
+  color: #86efac;
+}
+
+.error {
+  background: rgba(239, 68, 68, 0.14);
+  color: #fca5a5;
+}
+
+.output {
+  min-height: 260px;
+  padding: 1rem 1.1rem 1.2rem;
+  margin: 0;
+  overflow: auto;
+  color: #dbeafe;
+  background: #0b1220;
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 0.92rem;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
