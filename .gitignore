@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+.env
+
+# Node
+node_modules/
+.next/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Models
+*.pkl
+
+# Generated
+dist/
+build/
+
+# Session data
+session_logs/
+
+# Python env
+.venv/
+
+# Secrets
+.env.local
