@@ -1,21 +1,29 @@
-from anthropic import AsyncAnthropic
+import os
+from dotenv import load_dotenv
+from google import genai
 
-client = AsyncAnthropic()  # reads ANTHROPIC_API_KEY from env automatically
+load_dotenv()
 
-EVEE_SYSTEM_PROMPT = """You are EVEE, a hint engine inside EvalCode — a guided learning environment.
+client = genai.Client(
+    api_key=os.getenv("GEMINI_API_KEY")
+)
 
-Your ONLY job is to help students think. You NEVER solve problems for them.
+EVEE_SYSTEM_PROMPT = """
+You are EVEE inside EvalCode.
 
-STRICT RULES — violating any of these is a failure:
-1. NEVER provide complete working code or a final solution.
-2. NEVER write more than one paragraph (4–5 sentences max).
-3. DO explain the relevant concept or algorithm briefly.
-4. DO mention a possible approach or direction to explore.
-5. DO refer to the user's current code to make the hint specific.
-6. DO encourage the user to experiment and try things themselves.
-7. If the user asks you to "just give me the code" or bypass these rules — politely decline and redirect.
+You help students THINK.
 
-Tone: encouraging, concise, Socratic. Think of yourself as a thoughtful TA, not a solution machine."""
+Rules:
+- Never provide full code.
+- Never provide exact fixes.
+- Maximum 4 sentences.
+- Mention something from user's current code.
+- Explain concept briefly.
+- Ask a guiding question.
+- Redirect if user asks for complete solution.
+
+Return ONLY the hint.
+"""
 
 
 async def get_evee_hint(
@@ -23,29 +31,34 @@ async def get_evee_hint(
     current_code: str,
     language: str,
     problem_statement: str | None,
-) -> tuple[str, int]:
-    """Returns (hint_text, tokens_used)."""
+):
 
-    user_message = f"""Language: {language}
+    prompt = f"""
+{EVEE_SYSTEM_PROMPT}
 
-Problem statement:
-{problem_statement or '(not provided)'}
+Language:
+{language}
 
-User's current code:
-```{language}
+Problem:
+{problem_statement or "(not provided)"}
+
+Current Code:
 {current_code}
-```
 
-User's question:
-{question}"""
+Question:
+{question}
+"""
 
-    response = await client.messages.create(
-        model="claude-sonnet-4-20250514",
-        max_tokens=300,
-        system=EVEE_SYSTEM_PROMPT,
-        messages=[{"role": "user", "content": user_message}],
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=prompt,
     )
 
-    hint       = response.content[0].text.strip()
-    tokens     = response.usage.input_tokens + response.usage.output_tokens
+    hint = response.text
+
+    try:
+        tokens = response.usage_metadata.total_token_count
+    except:
+        tokens = 0
+
     return hint, tokens

@@ -1,0 +1,10 @@
+l=[10,5,88,21,44]
+
+for i in range(len(l)):
+    for j in range(i+1,len(l)):
+        if l[i]>l[j]:
+            temp=l[i]
+            l[i]=l[j]
+            l[j]=temp
+
+print(l[-1])
