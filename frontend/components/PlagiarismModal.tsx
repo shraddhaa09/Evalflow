@@ -21,7 +21,7 @@ export function PlagiarismModal() {
 
         <div className={styles.header}>
           <div className={styles.headerLeft}>
-            <div className={styles.headerIcon}>🔍</div>
+            <div className={styles.headerIcon}>⭐</div>
             <div>
               <div className={styles.headerTitle}>AI Similarity Check</div>
               <div className={styles.headerSub}>Powered by ML classifier</div>
