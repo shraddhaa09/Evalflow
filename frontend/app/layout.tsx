@@ -4,6 +4,9 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'EvalCode',
   description: 'Guided coding environment',
+  icons: {
+    icon: '/favicon.ico',
+  },
 }
 
 export default function RootLayout({

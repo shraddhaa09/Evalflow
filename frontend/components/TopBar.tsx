@@ -68,28 +68,42 @@ export function TopBar() {
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.logo}>EvalCode</div>
+  <div className={styles.container}>
+    <div className={styles.logo}>
+      Eval<span className={styles.logoAccent}>Code</span>
+    </div>
 
-      <div className={styles.controls}>
-        <select value={language} onChange={(e) => setLanguage(e.target.value)} className={styles.select}>
-          <option value="python">Python</option>
-          <option value="javascript">JavaScript</option>
-          <option value="java">Java</option>
-          <option value="c">C</option>
-          <option value="cpp">C++</option>
-        </select>
-
-        <button onClick={handleRun} className="primary">
-          Run ▶
-        </button>
-
-        <button onClick={handleCheckAI} className="secondary">
-          Check AI
-        </button>
-
-        <div className={styles.timer}>{formatTime(elapsedTime)}</div>
+    <div className={styles.marqueeWrap}>
+      <div className={styles.marquee}>
+        {['Write every line yourself', 'Sandboxed execution', 'Hints, not answers', 'AI-detection built in', 'Progress is earned',
+          'Write every line yourself', 'Sandboxed execution', 'Hints, not answers', 'AI-detection built in', 'Progress is earned']
+          .map((text, i) => (
+            <span key={i} className={styles.marqueeItem}>
+              <span className={styles.marqueeDot} />
+              {text}
+            </span>
+          ))}
       </div>
     </div>
-  )
+
+    <div className={styles.controls}>
+      <div className={styles.langBadge}>
+        <span className={styles.langDot} />
+        Python
+      </div>
+
+      <div className={styles.divider} />
+
+      <button onClick={handleRun} className="primary">Run Code</button>
+      <button onClick={handleCheckAI} className="secondary">Check AI</button>
+
+      <div className={styles.divider} />
+
+      <div className={styles.timer}>
+        <span className={styles.timerPulse} />
+        {formatTime(elapsedTime)}
+      </div>
+    </div>
+  </div>
+)
 }
