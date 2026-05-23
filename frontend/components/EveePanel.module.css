@@ -299,3 +299,27 @@
   flex-shrink: 0;
   margin-top: 5px;
 }
+
+.markdownQuestion {
+  margin: 4px 0 0;
+  padding: 10px 12px;
+  background: rgba(21, 93, 252, 0.04);
+  border: 1px solid rgba(21, 93, 252, 0.1);
+  border-radius: 10px;
+  color: #1e40af;
+  font-weight: 500;
+  font-size: 0.82rem;
+  line-height: 1.65;
+}
+
+/* Question callout — last paragraph ending with ? */
+.markdown p:last-child:has(em),
+.markdown p:last-child {
+  background: rgba(21, 93, 252, 0.04);
+  border: 1px solid rgba(21, 93, 252, 0.1);
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: #1e40af;
+  font-weight: 500;
+  margin-top: 4px;
+}

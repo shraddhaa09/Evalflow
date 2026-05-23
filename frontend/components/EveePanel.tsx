@@ -4,6 +4,7 @@ import { useEditorStore } from '@/hooks/useEditorStore'
 import { useHintStore } from '@/hooks/useHintStore'
 import { getHint } from '@/services/api'
 import styles from './EveePanel.module.css'
+import { HintRenderer } from './HintRenderer'
 
 export function EveePanel() {
   const { code, language } = useEditorStore()
@@ -88,7 +89,7 @@ export function EveePanel() {
 
           {hint && (
             <div className={styles.hintBox}>
-              <p>{hint}</p>
+              <HintRenderer hint={hint} />
             </div>
           )}
 
