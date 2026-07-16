@@ -77,15 +77,17 @@ export function PlagiarismModal() {
                 </div>
               </div>
 
-              <div className={styles.signals}>
-                <div className={styles.signalsLabel}>Signals detected</div>
-                {result.signals.map((signal, idx) => (
-                  <div key={idx} className={styles.signalItem}>
-                    <span className={styles.signalDot} style={{ background: color }} />
-                    {signal}
-                  </div>
-                ))}
-              </div>
+              {result.signals && (
+                <div className={styles.signals}>
+                  <div className={styles.signalsLabel}>Signals detected</div>
+                  {result.signals.map((signal, idx) => (
+                    <div key={idx} className={styles.signalItem}>
+                      <span className={styles.signalDot} style={{ background: color }} />
+                      {signal}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className={styles.footer}>
