@@ -7,14 +7,10 @@ export type PlagiarismRequest = {
 };
 
 export type PlagiarismResponse = {
-  success: boolean;
-  score: number;
+  ai_probability: number;
   label: string;
-  details?: {
-    structuralRegularity: number;
-    tokenDiversity: number;
-    typingPattern: number;
-  };
+  confidence: number;
+  signals: string[];
 };
 
 export const plagiarismService = {
