@@ -4,9 +4,15 @@ type HintStore = {
   hint: string;
   hintCount: number;
   hints: string[];
+  question: string;
+  isLoading: boolean;
+  error: string | null;
   getNextHint: () => void;
   resetHints: () => void;
   setHint: (hint: string) => void;
+  setQuestion: (question: string) => void;
+  setLoading: (loading: boolean) => void;
+  setError: (error: string | null) => void;
 };
 
 const hintSteps = [
@@ -19,6 +25,9 @@ export const useHintStore = create<HintStore>((set, get) => ({
   hint: hintSteps[0],
   hintCount: 1,
   hints: hintSteps,
+  question: "",
+  isLoading: false,
+  error: null,
   getNextHint: () => {
     const { hintCount, hints } = get();
     const nextIndex = Math.min(hintCount, hints.length - 1);
@@ -40,4 +49,7 @@ export const useHintStore = create<HintStore>((set, get) => ({
       hintCount: hintCount + 1,
     });
   },
+  setQuestion: (question: string) => set({ question }),
+  setLoading: (isLoading: boolean) => set({ isLoading }),
+  setError: (error: string | null) => set({ error }),
 }));

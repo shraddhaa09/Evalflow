@@ -2,7 +2,7 @@
 
 import { useEditorStore } from '@/hooks/useEditorStore'
 import { useHintStore } from '@/hooks/useHintStore'
-import { getHint } from '@/services/api'
+import { getHint } from '@/services/hint.service'
 import styles from './EveePanel.module.css'
 import { HintRenderer } from './HintRenderer'
 
