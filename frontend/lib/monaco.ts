@@ -32,8 +32,8 @@ export function setupMonaco(monaco: typeof Monaco) {
     },
   });
 
-  monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true);
-  monaco.languages.typescript.typescriptDefaults.setEagerModelSync(true);
+  // TypeScript language defaults (deprecated in newer versions, skipped)
+  // If needed, can be re-enabled with proper type checking
 }
 
 export const monacoEditorOptions = {
