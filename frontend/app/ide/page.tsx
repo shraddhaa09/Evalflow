@@ -1,4 +1,4 @@
-"use client";
+u..................."use client";
 
 import { useState, useEffect } from "react";
 import styles from "./page.module.css";
@@ -18,6 +18,7 @@ import { getHint } from "@/services/hint.service";
 export default function IDEPage() {
   const [isRunning, setIsRunning] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // Zustand stores
   const { code, setCode } = useEditorStore();
@@ -32,19 +33,30 @@ export default function IDEPage() {
 
   const handleRunCode = async () => {
     if (!code.trim()) {
+      setErrorMessage("Please write some code first.");
       setOutput("Error: Please write some code first.");
       setStatus("error");
       return;
     }
 
+    setErrorMessage(null);
     setIsRunning(true);
     setStatus("running");
 
     try {
       const result = await executeCode(code);
-      setOutput(result.output || result.message);
-      setStatus(result.success ? "success" : "error");
+      const outputText = [result.stdout, result.stderr]
+        .filter(Boolean)
+        .join("");
+      setOutput(
+        outputText ||
+          (result.status === "success"
+            ? "Execution completed with no output."
+            : `Execution ended with status: ${result.status}`)
+      );
+      setStatus(result.status === "success" ? "success" : "error");
     } catch (error: any) {
+      setErrorMessage(`Unable to run code: ${error.message}`);
       setOutput(`Error: ${error.message}`);
       setStatus("error");
     } finally {
@@ -54,24 +66,30 @@ export default function IDEPage() {
 
   const handleCheckAuthenticity = async () => {
     if (!code.trim()) {
-      alert("Please write some code first.");
+      setErrorMessage("Please write some code first.");
       return;
     }
 
+    setErrorMessage(null);
+
     try {
       const result = await checkPlagiarism(code);
-      setPlagiarismScore(result.score || 0);
-      openPlagiarism();
+      const score = Math.round((result.ai_probability || 0) * 100);
+      setPlagiarismScore(score);
+      openPlagiarism(score);
     } catch (error: any) {
-      alert(`Error checking authenticity: ${error.message}`);
+      setErrorMessage(`Unable to check authenticity: ${error.message}`);
     }
   };
 
   const handleGetHint = async () => {
+    setErrorMessage(null);
+
     try {
       const result = await getHint(code);
-      setHint(result.hint);
+      setHint(result.hint || "No hint was returned.");
     } catch (error: any) {
+      setErrorMessage(`Unable to generate hint: ${error.message}`);
       setHint("Unable to generate hint at this time.");
     }
   };
@@ -83,6 +101,22 @@ export default function IDEPage() {
   return (
     <>
       <main className={styles.ideContainer}>
+        {errorMessage ? (
+          <div
+            role="alert"
+            style={{
+              marginBottom: "1rem",
+              padding: "0.75rem 1rem",
+              border: "1px solid #f87171",
+              borderRadius: "0.5rem",
+              backgroundColor: "#fee2e2",
+              color: "#991b1b",
+            }}
+          >
+            {errorMessage}
+          </div>
+        ) : null}
+
         <TopBar
           language="Python"
           title="Binary Search — Practice"
