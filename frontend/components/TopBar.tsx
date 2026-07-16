@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react'
 import { useEditorStore } from '@/hooks/useEditorStore'
 import { useTerminalStore } from '@/hooks/useTerminalStore'
 import { usePlagiarismStore } from '@/hooks/usePlagiarismStore'
-import { executeCode, checkPlagiarism } from '@/services/api'
+import { executeCode } from '@/services/execute.service'
+import { checkPlagiarism } from '@/services/plagiarism.service'
 import styles from './TopBar.module.css'
 
 export function TopBar() {
@@ -38,7 +39,7 @@ export function TopBar() {
     setOutput('Running...\n')
 
     try {
-      const result = await executeCode(code, language)
+      const result = await executeCode(code)
       setOutput(`${result.stdout}${result.stderr}[Exit code: ${result.exit_code}]\n[Time: ${result.execution_time}s]\n`)
     } catch (error) {
       setOutput(`Error: ${error instanceof Error ? error.message : 'Unknown error'}\n`)
@@ -57,7 +58,7 @@ export function TopBar() {
     setPlagError(null)
 
     try {
-      const result = await checkPlagiarism(code, language)
+      const result = await checkPlagiarism(code)
       setPlagResult(result)
       openPlagiarism()
     } catch (error) {
