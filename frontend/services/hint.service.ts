@@ -14,8 +14,13 @@ export type HintResponse = {
 };
 
 export const hintService = {
-  getHint: (payload: HintRequest): Promise<HintResponse> =>
-    api.post<HintResponse>("/hint", payload),
+  getHint: async (payload: HintRequest): Promise<HintResponse> => {
+    try {
+      return await api.post<HintResponse>("/hint", payload);
+    } catch (error) {
+      throw new Error("Hint temporarily unavailable, try again");
+    }
+  },
 };
 
 // Convenience functions

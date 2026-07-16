@@ -1,7 +1,10 @@
+import logging
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
+
+logger = logging.getLogger(__name__)
 
 try:
     from google import genai
@@ -36,6 +39,12 @@ Return ONLY the paragraph. No markdown formatting except [square brackets] for k
 """
 
 
+FALLBACK_HINT = (
+    "Focus on the core control flow first: identify the condition that should stop the loop, "
+    "and then decide how the search boundaries should shrink after each comparison."
+)
+
+
 async def get_evee_hint(
     question: str,
     current_code: str,
@@ -60,22 +69,22 @@ Question:
 """
 
     if client is None:
-        fallback_hint = (
-            "Focus on the core control flow first: identify the condition that should stop the loop, "
-            "and then decide how the search boundaries should shrink after each comparison."
-        )
-        return fallback_hint, 0
-
-    response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=prompt,
-    )
-
-    hint = response.text
+        return FALLBACK_HINT, 0
 
     try:
-        tokens = response.usage_metadata.total_token_count
-    except Exception:
-        tokens = 0
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt,
+        )
 
-    return hint, tokens
+        hint = getattr(response, "text", None) or FALLBACK_HINT
+
+        try:
+            tokens = response.usage_metadata.total_token_count
+        except Exception:
+            tokens = 0
+
+        return hint, tokens
+    except Exception as exc:
+        logger.exception("EVEE Gemini request failed; returning fallback hint: %s", exc)
+        return FALLBACK_HINT, 0

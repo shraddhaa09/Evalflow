@@ -22,7 +22,8 @@ export function EveePanel() {
       const result = await getHint(question, code, language)
       setHint(result.hint)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to get hint')
+      setHint('Hint temporarily unavailable, try again')
+      setError('Hint temporarily unavailable, try again')
     } finally {
       setLoading(false)
     }

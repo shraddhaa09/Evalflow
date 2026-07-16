@@ -89,8 +89,8 @@ export default function IDEPage() {
       const result = await getHint(code);
       setHint(result.hint || "No hint was returned.");
     } catch (error: any) {
-      setErrorMessage(`Unable to generate hint: ${error.message}`);
-      setHint("Unable to generate hint at this time.");
+      setErrorMessage("Hint temporarily unavailable, try again.");
+      setHint("Hint temporarily unavailable, try again.");
     }
   };
 
