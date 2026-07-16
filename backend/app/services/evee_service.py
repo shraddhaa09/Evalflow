@@ -1,12 +1,16 @@
 import os
 from dotenv import load_dotenv
-from google import genai
 
 load_dotenv()
 
-client = genai.Client(
-    api_key=os.getenv("GEMINI_API_KEY")
-)
+try:
+    from google import genai
+except Exception:  # pragma: no cover - fallback for local/demo environments
+    genai = None
+
+client = None
+if genai is not None and os.getenv("GEMINI_API_KEY"):
+    client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 EVEE_SYSTEM_PROMPT = """
 You are EVEE inside EvalCode — an AI mentor embedded inside a coding IDE.
@@ -55,6 +59,13 @@ Question:
 {question}
 """
 
+    if client is None:
+        fallback_hint = (
+            "Focus on the core control flow first: identify the condition that should stop the loop, "
+            "and then decide how the search boundaries should shrink after each comparison."
+        )
+        return fallback_hint, 0
+
     response = client.models.generate_content(
         model="gemini-2.5-flash",
         contents=prompt,
@@ -64,7 +75,7 @@ Question:
 
     try:
         tokens = response.usage_metadata.total_token_count
-    except:
+    except Exception:
         tokens = 0
 
     return hint, tokens
