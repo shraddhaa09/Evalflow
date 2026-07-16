@@ -21,7 +21,10 @@ def load_model():
     global model
 
     if model is None:
-        model = joblib.load(MODEL_PATH)
+        try:
+            model = joblib.load(MODEL_PATH)
+        except FileNotFoundError:
+            model = None
 
     return model
 
@@ -58,6 +61,30 @@ def score_code(code):
     clf = load_model()
 
     features = extract_features(code)
+
+    if clf is None:
+        feature_vector = features[0]
+        heuristic_score = 0.2
+        heuristic_score += min(feature_vector[3], 8) * 0.02
+        heuristic_score += min(feature_vector[4], 6) * 0.03
+        heuristic_score += min(feature_vector[5], 1.0) * 0.15
+        heuristic_score = float(np.clip(heuristic_score, 0.0, 0.95))
+        ai_probability = heuristic_score
+        confidence = 0.6
+        label = (
+            PlagiarismLabel.likely_ai
+            if ai_probability >= 0.75
+            else PlagiarismLabel.possibly_ai
+            if ai_probability >= 0.45
+            else PlagiarismLabel.likely_human
+        )
+        signals = build_signals(features)
+        return (
+            round(ai_probability, 4),
+            label,
+            round(confidence, 4),
+            signals
+        )
 
     proba = clf.predict_proba(features)[0]
 
