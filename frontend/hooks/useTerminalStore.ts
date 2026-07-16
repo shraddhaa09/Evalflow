@@ -11,6 +11,8 @@ type TerminalStore = {
   runSuccess: (output: string) => void;
   runError: (output: string) => void;
   resetTerminal: () => void;
+  clear: () => void;
+  setRunning: (running: boolean) => void;
 };
 
 const initialOutput =
@@ -40,5 +42,14 @@ export const useTerminalStore = create<TerminalStore>((set) => ({
     set({
       status: "idle",
       output: initialOutput,
+    }),
+  clear: () =>
+    set({
+      status: "idle",
+      output: initialOutput,
+    }),
+  setRunning: (running: boolean) =>
+    set({
+      status: running ? "running" : "idle",
     }),
 }));
