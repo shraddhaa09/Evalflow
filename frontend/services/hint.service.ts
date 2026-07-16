@@ -2,17 +2,15 @@
 import { api } from "./api";
 
 export type HintRequest = {
-  code: string;
+  question: string;
+  current_code: string;
   language: string;
-  question?: string;
-  problemId?: string;
+  problem_statement?: string | null;
 };
 
 export type HintResponse = {
-  success: boolean;
   hint: string;
-  level: number;
-  reasoning?: string;
+  tokens_used?: number | null;
 };
 
 export const hintService = {
@@ -21,9 +19,15 @@ export const hintService = {
 };
 
 // Convenience functions
-export const getHint = (code: string): Promise<HintResponse> => {
+export const getHint = (
+  code: string,
+  question = "Please help me progress on this solution.",
+  problemStatement?: string | null
+): Promise<HintResponse> => {
   return hintService.getHint({
-    code,
+    question,
+    current_code: code,
     language: "python",
+    problem_statement: problemStatement ?? null,
   });
 };
