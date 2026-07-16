@@ -9,15 +9,12 @@ export type ExecuteRequest = {
 };
 
 export type ExecuteResponse = {
-  success: boolean;
-  output: string;
   stdout: string;
   stderr: string;
-  signal: string | null;
-  exitCode: number;
-  time: number | null;
-  memory: number | null;
-  message?: string;
+  exit_code: number;
+  execution_time: number;
+  memory_used: string | null;
+  status: string;
 };
 
 export const executeService = {
@@ -30,6 +27,6 @@ export const executeCode = (code: string): Promise<ExecuteResponse> => {
   return executeService.execute({
     code,
     language: "python",
-    version: "3.10",
+    version: "3.10.0",
   });
 };
