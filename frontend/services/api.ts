@@ -1,6 +1,7 @@
 // services/api.ts
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE ||
+
+const _BASE =
+  process.env.NEXT_PUBLIC_API_URL ||
   process.env.NEXT_PUBLIC_API_BASE_URL ||
   "http://localhost:8000";
 
@@ -16,7 +17,7 @@ export async function request<T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const baseUrl = normalizeBaseUrl(API_BASE);
+  const baseUrl = normalizeBaseUrl(_BASE);
   const url = `${baseUrl}${normalizeEndpoint(endpoint)}`;
 
   const config: RequestInit = {
@@ -36,24 +37,31 @@ export async function request<T>(
       errorData.error ||
       errorData.message ||
       `HTTP ${response.status}`;
-    throw new Error(typeof detail === "string" ? detail : JSON.stringify(detail));
+
+    throw new Error(
+      typeof detail === "string" ? detail : JSON.stringify(detail)
+    );
   }
 
   return response.json();
 }
 
 export const api = {
-  get: <T>(endpoint: string) => request<T>(endpoint, { method: "GET" }),
+  get: <T>(endpoint: string) =>
+    request<T>(endpoint, { method: "GET" }),
+
   post: <T>(endpoint: string, body?: unknown) =>
     request<T>(endpoint, {
       method: "POST",
       body: JSON.stringify(body),
     }),
+
   put: <T>(endpoint: string, body?: unknown) =>
     request<T>(endpoint, {
       method: "PUT",
       body: JSON.stringify(body),
     }),
+
   delete: <T>(endpoint: string) =>
     request<T>(endpoint, { method: "DELETE" }),
 };
