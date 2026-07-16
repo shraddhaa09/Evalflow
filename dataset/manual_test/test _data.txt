@@ -1,0 +1,19 @@
+code_a1, code b1 
+que - divide into even and odd list
+high risk
+
+code_a2, code b2 
+que - armstrong number
+high risk
+
+code_a3, code b3 
+que - count even number
+low risk
+
+code_a4, code b4 
+que - count vowels in string
+high risk
+
+code_a5, code b5 
+que - is string anagram 
+medium or high risk

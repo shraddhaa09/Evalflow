@@ -1,0 +1,11 @@
+001 Fibonacci
+002 Palindrome
+003 Binary Search
+004 Bubble Sort
+005 Prime Number Check
+006 Factorial of number 
+007 count vowels in a string
+008 largest number in list
+009 reverse a string
+010 leap year checker
+011 sum of digits
