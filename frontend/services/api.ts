@@ -1,11 +1,23 @@
 // services/api.ts
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "/api";
+const API_BASE =
+  process.env.NEXT_PUBLIC_API_BASE ||
+  process.env.NEXT_PUBLIC_API_BASE_URL ||
+  "http://localhost:8000";
+
+function normalizeBaseUrl(baseUrl: string) {
+  return baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
+}
+
+function normalizeEndpoint(endpoint: string) {
+  return endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+}
 
 export async function request<T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const url = `${API_BASE}${endpoint}`;
+  const baseUrl = normalizeBaseUrl(API_BASE);
+  const url = `${baseUrl}${normalizeEndpoint(endpoint)}`;
 
   const config: RequestInit = {
     headers: {
@@ -19,9 +31,12 @@ export async function request<T>(
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
-    throw new Error(
-      errorData.error || errorData.message || `HTTP ${response.status}`
-    );
+    const detail =
+      errorData.detail ||
+      errorData.error ||
+      errorData.message ||
+      `HTTP ${response.status}`;
+    throw new Error(typeof detail === "string" ? detail : JSON.stringify(detail));
   }
 
   return response.json();
