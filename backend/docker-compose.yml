@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  backend:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../dataset:/dataset  # Mount dataset and models so backend can access them
+    environment:
+      - PYTHONUNBUFFERED=1
