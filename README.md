@@ -103,13 +103,50 @@ EvalFlow/
 │   ├── UI logic
 │   └── Client-side workflows
 │
-├── ML/
-│   └── Machine learning modules
+├── dataset/
+│   ├── pipeline/              # canonical plagiarism training scripts
+│   ├── data/raw/              # submissions, telemetry, labels
+│   ├── data/processed/        # training pair CSVs
+│   └── models/                # plagiarism_model_v3.pkl + evaluation
+├── docs/
+│   ├── ARCHITECTURE.md        # system design (training / inference / backend)
+│   └── PAPER.md               # technical summary for reporting
+├── ML/                        # deprecated — see ML/README.md
 │
 ├── package.json
 ├── package-lock.json
 └── README.md
 ```
+
+---
+
+# Plagiarism Detection (ML)
+
+EvalFlow includes a pairwise plagiarism classifier trained on code similarity and telemetry features.
+
+## Pipelines
+
+| Layer | Location | Purpose |
+|-------|----------|---------|
+| **Training** | `dataset/pipeline/` | Offline scripts `01`→`04` to build features, train, and evaluate |
+| **Inference** | `backend/app/services/` | Runtime feature extraction + `predict_proba()` |
+| **Backend API** | `POST /plagiarism`, `GET /health` | Serves scores; fails explicitly if models are unavailable |
+
+Full diagrams and component tables: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)  
+Reporting summary: [docs/PAPER.md](docs/PAPER.md)
+
+## Train or re-evaluate the model
+
+```bash
+cd dataset/pipeline
+pip install pandas scikit-learn joblib sentence-transformers
+python 01_generate_pairs.py
+python 02_extract_semantics.py
+python 03_train_model.py
+python 04_evaluate_model.py
+```
+
+Metrics are saved under `dataset/models/evaluation/`. Model version and split metadata are in `dataset/models/plagiarism_model_v3.manifest.json`.
 
 ---
 
