@@ -74,9 +74,7 @@ export default function IDEPage() {
 
     try {
       const result = await checkPlagiarism(code);
-      const score = Math.round((result.ai_probability || 0) * 100);
-      setPlagiarismScore(score);
-      openPlagiarism(score);
+      openPlagiarism(result);
     } catch (error: any) {
       setErrorMessage(`Unable to check authenticity: ${error.message}`);
     }

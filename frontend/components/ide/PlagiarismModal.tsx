@@ -1,3 +1,4 @@
+import { usePlagiarismStore } from "@/hooks/usePlagiarismStore";
 import styles from "./PlagiarismModal.module.css";
 
 type PlagiarismModalProps = {
@@ -11,10 +12,12 @@ export default function PlagiarismModal({
   onClose,
   score = 24,
 }: PlagiarismModalProps) {
+  const { result } = usePlagiarismStore();
+  
   if (!open) return null;
 
   const riskLabel =
-    score >= 70 ? "High review needed" : score >= 40 ? "Moderate review" : "Low concern";
+    score >= 85 ? "High Plagiarism Risk" : score >= 60 ? "Moderate Plagiarism Risk" : "Clean/Low Risk";
 
   return (
     <div className={styles.overlay} role="dialog" aria-modal="true" aria-labelledby="plagiarism-title">
@@ -33,24 +36,38 @@ export default function PlagiarismModal({
 
         <div className={styles.body}>
           <div className={styles.scoreCard}>
-            <span className={styles.scoreLabel}>AI assistance score</span>
+            <span className={styles.scoreLabel}>AI / Plagiarism match score</span>
             <strong className={styles.scoreValue}>{score}%</strong>
             <span className={styles.scoreMeta}>{riskLabel}</span>
           </div>
 
           <div className={styles.details}>
-            <div className={styles.detailItem}>
-              <h3>Structural consistency</h3>
-              <p>The submission pattern appears mostly natural, with some areas worth a second look.</p>
-            </div>
-            <div className={styles.detailItem}>
-              <h3>Token diversity</h3>
-              <p>Vocabulary and implementation flow suggest a student-led attempt rather than direct generation.</p>
-            </div>
-            <div className={styles.detailItem}>
-              <h3>Typing behavior</h3>
-              <p>Review session timing and editing rhythm alongside the score before making a final judgment.</p>
-            </div>
+            {result?.highest_similarity_match && (
+              <div className={styles.detailItem}>
+                <h3>Highest Similarity Match</h3>
+                <p>Most similar to submission: <strong>{result.highest_similarity_match}</strong></p>
+              </div>
+            )}
+            {result?.signals && result.signals.length > 0 && (
+              <div className={styles.detailItem}>
+                <h3>Detection Signals</h3>
+                <ul>
+                  {result.signals.map((sig, i) => (
+                    <li key={i}>{sig}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {result?.features && (
+              <div className={styles.detailItem}>
+                <h3>Feature Explanations</h3>
+                <ul>
+                  <li>Semantic Similarity (CodeBERT): {Math.round(result.features.semantic_similarity * 100)}%</li>
+                  <li>Token Similarity (Jaccard): {Math.round(result.features.token_similarity * 100)}%</li>
+                  <li>Structure Similarity (AST-lite): {Math.round(result.features.structure_similarity * 100)}%</li>
+                </ul>
+              </div>
+            )}
           </div>
         </div>
 
