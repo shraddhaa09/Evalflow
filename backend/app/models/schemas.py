@@ -33,19 +33,28 @@ class HintResponse(BaseModel):
 
 # ── Plagiarism ─────────────────────────────────────────────
 class PlagiarismLabel(str, Enum):
-    likely_ai       = "Likely AI Generated"
-    possibly_ai     = "Possibly AI Assisted"
-    likely_human    = "Likely Human Written"
+    high_plagiarism = "High Plagiarism Risk"
+    medium_plagiarism = "Medium Plagiarism Risk"
+    low_plagiarism = "Low Plagiarism Risk"
+    clean = "Clean"
+    insufficient_data = "Insufficient Data"
 
 class PlagiarismRequest(BaseModel):
     code: str = Field(..., description="Code to analyse")
     language: str = Field(default="python")
+    assignment_id: str = Field(..., description="Assignment ID for pairwise matching")
+    typing_speed_wpm: float = 0.0
+    idle_ratio: float = 0.0
+    paste_ratio: float = 0.0
+    tab_switches: int = 0
+    suspicion_score: float = 0.0
 
 class PlagiarismResponse(BaseModel):
-    ai_probability: float           # 0.0 – 1.0
-    label: PlagiarismLabel
-    confidence: float               # model confidence
-    signals: List[str]              # explanatory flags shown in UI
+    probability: float           # 0.0 – 1.0
+    risk_level: str
+    matched_submission: Optional[str] = None
+    feature_contributions: Optional[dict] = None
+    explanation: List[str]
 
 
 # ── Session ────────────────────────────────────────────────
